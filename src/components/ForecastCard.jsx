@@ -40,7 +40,6 @@ export function ForecastCard({ forecast }) {
   )
 }
 
-// Define propiedades requeridas para el componente 'ForecastCard' utilizando PropTypes
 ForecastCard.propTypes = {
   forecast: PropTypes.object.isRequired
 }

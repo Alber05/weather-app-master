@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAnglesUp } from '@fortawesome/free-solid-svg-icons'
 
 export function HighLightsCard({ title, value, unit, deg }) {
+  // Función para obtener la dirección del viento basada en grados.
   const getWindDirection = (deg) => {
     switch (true) {
       case (deg >= 0 && deg < 22.5) || (deg >= 337.5 && deg <= 360):
@@ -26,8 +27,8 @@ export function HighLightsCard({ title, value, unit, deg }) {
     }
   }
 
+  // Obtener la dirección del viento y establecer la rotación correspondiente.
   const windDirection = getWindDirection(deg)
-
   const rotateDirection = {
     norte: 'rotate-[0deg]',
     noreste: 'rotate-[45deg]',
@@ -37,10 +38,10 @@ export function HighLightsCard({ title, value, unit, deg }) {
     suroeste: 'rotate-[225deg]',
     oeste: 'rotate-[270deg]',
     noroeste: 'rotate-[315deg]'
-  }[getWindDirection(deg).toLowerCase()]
+  }[windDirection.toLowerCase()]
 
   return (
-    <article className='highlight bg-[#1E213A] h-full w-full col-span-8 lg:col-span-4 p-6 flex flex-col  rounded-md overflow-hidden'>
+    <article className='highlight bg-[#1E213A] h-full w-full col-span-8 lg:col-span-4 p-6 flex flex-col rounded-md overflow-hidden'>
       <h3 className='text-base font-medium'>{title}</h3>
       <p className='text-[64px] font-medium'>
         {value}
@@ -65,7 +66,6 @@ export function HighLightsCard({ title, value, unit, deg }) {
       )}
       {title === 'Viento' && (
         <p className='h-full flex items-center justify-center gap-2'>
-          {' '}
           <FontAwesomeIcon icon={faAnglesUp} className={rotateDirection} />
           {windDirection}
         </p>

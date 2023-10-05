@@ -32,7 +32,7 @@ function WeatherIcon({ currentWeather }) {
         return Sleet
       case 'Snow ':
         return Snow
-      case 'Thunderstorm ':
+      case 'Thunderstorm':
         return Thunderstorm
       default:
         return Thunderstorm

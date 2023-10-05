@@ -85,7 +85,6 @@ function Browser({ showMenu, setShowMenu }) {
   )
 }
 
-// Definir PropTypes para las propiedades esperadas
 Browser.propTypes = {
   showMenu: PropTypes.bool.isRequired,
   setShowMenu: PropTypes.func.isRequired
