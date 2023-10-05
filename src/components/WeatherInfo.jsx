@@ -13,9 +13,9 @@ function WeatherInfo() {
   console.log(currentWeather)
 
   return (
-    <div className='info col-span-6 lg:col-span-4 bg-[#100E1D] min-h-screen lg:h-screen lg:overflow-y-auto'>
-      <div className='w-[80%] mx-auto flex flex-col justify-center items min-h-screen'>
-        <DegreesControllerButtons />
+    <div className='info col-span-6 lg:col-span-4 bg-[#100E1D] min-h-screen lg:h-screen lg:overflow-y-auto '>
+      <DegreesControllerButtons />
+      <div className='relative w-[80%] mx-auto flex flex-col justify-center items min-h-[calc(screen-72px)] '>
         <section className='w-full grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-4 place-items-center py-12'>
           {dailyForecast.map((dailyForecast) => (
             <ForecastCard key={dailyForecast.dt} forecast={dailyForecast} />

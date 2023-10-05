@@ -19,7 +19,7 @@ export function DegreesControllerButtons() {
   const disabledButtonClass = 'bg-[#585676] text-[#E7E7EB]'
 
   return (
-    <div className='flex items-center justify-end gap-4'>
+    <div className='w-[80%] mx-auto hidden lg:flex items-center justify-end gap-4 pt-8'>
       {/* Botón para Celsius */}
       <button
         className={`rounded-full flex items-center justify-center w-[40px] h-[40px] font-bold ${
