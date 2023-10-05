@@ -1,64 +1,49 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { ApiContext } from '../context/ApiContext'
+import { useDate } from '../hooks/useDate'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 import {
   faLocationCrosshairs,
   faLocationDot
 } from '@fortawesome/free-solid-svg-icons'
 import cloudBg from '../assets/Cloud-background.png'
-import ejemplo from '../assets/HeavyRain.png'
 import Browser from './Browser'
-
-const handleGeolocation = async () => {
-  try {
-    // Solicita permisos de geolocalización incluso si ya se han bloqueado previamente.
-    const position = await navigator.permissions.query({
-      name: 'geolocation'
-    })
-
-    if (
-      position.state === 'granted' ||
-      position.state === 'prompt' ||
-      position.state === 'denied'
-    ) {
-      // Los permisos están otorgados o en modo de solicitud, puedes obtener la ubicación.
-      navigator.geolocation.getCurrentPosition((position) => {
-        const latitud = position.coords.latitude
-        const longitud = position.coords.longitude
-        console.log(latitud, longitud)
-      })
-    } else {
-      console.log('El usuario ha bloqueado la solicitud de geolocalización.')
-    }
-  } catch (error) {
-    console.error('Error al solicitar permisos de geolocalización:', error)
-  }
-}
+import WeatherIcon from './WeatherIcon'
 
 function CurrentWeather() {
+  // Estado local para mostrar u ocultar el menú de búsqueda
   const [showMenu, setShowMenu] = useState(false)
 
+  // Obtener datos del contexto de la API y la función de geolocalización
+  const { currentWeather, handleGeolocationPermission, degreeUnits } =
+    useContext(ApiContext)
+  const { dt } = currentWeather
+
+  // Obtener datos de fecha a partir de un timestamp
+  const { currentDayName, currentNumberOfDay, currentMonth } = useDate(dt)
+
   return (
-    <div className='current relative col-span-6 md:col-span-2 bg-[#1E213A] min-h-screen py-8 overflow-hidden'>
+    <div className='current relative col-span-6 lg:col-span-2 bg-[#1E213A] py-8 overflow-x-hidden min-h-screen lg:h-screen'>
       <div className='w-[90%] mx-auto'>
-        <header className='h-full flex justify-between items-center'>
+        <div className='h-full flex justify-between items-center'>
+          {/* Botón para mostrar/ocultar el menú de búsqueda */}
           <button
             className='search w-[161px] drop-shadow-md h-10 text-[#E7E7EB] bg-[#6E707A]  z-10'
             onClick={() => setShowMenu(!showMenu)}
           >
-            Search for places
+            Buscar ciudad
           </button>
-          <button
-            className='w-10 h-10 bg-[#6E707A] rounded-full flex items-center justify-center cursor-pointer  z-10'
-            onClick={handleGeolocation}
-          >
+          {/* Botón para obtener la ubicación actual */}
+          <button className='w-10 h-10 bg-[#6E707A] rounded-full flex items-center justify-center cursor-pointer  z-10'>
             <FontAwesomeIcon
               icon={faLocationCrosshairs}
               style={{ color: '#ffffff' }}
               className='h-[22px] w-[22px]'
+              onClick={handleGeolocationPermission}
             />
           </button>
-        </header>
+        </div>
+        {/* Fondo de nube */}
         <div className='absolute w-[150%] max-h-[326px] top-[100px] -left-[111px] opacity-10 flex items-center'>
           <img
             src={cloudBg}
@@ -67,23 +52,38 @@ function CurrentWeather() {
           />
         </div>
         <div className='flex items-center justify-center h-[326px]'>
-          <img src={ejemplo} alt='Current wheater icon' className='' />
+          {/* Icono de clima */}
+          <WeatherIcon currentWeather={currentWeather} />
         </div>
         <div className='text-center'>
-          <h2 className='text-[144px] font-medium text-[#E7E7EB]'>
-            15{' '}
-            <span className='text-5xl font-light text-[#A09FB1] -ml-8'>ºC</span>
+          {/* Temperatura actual */}
+          <h2 className='text-[90px] font-medium text-[#E7E7EB]'>
+            {degreeUnits.celsius
+              ? currentWeather?.main?.temp.toFixed(0)
+              : ((currentWeather?.main?.temp * 9) / 5 + 32).toFixed(0)}
+            <span className='text-5xl font-light text-[#A09FB1] ml-1'>
+              {degreeUnits.celsius ? 'ºC' : 'ºF'}
+            </span>
           </h2>
-          <h3 className='text-4xl text-[#A09FB1] font-semibold'>Shower</h3>
+          {/* Descripción del clima */}
+          <h3 className='text-4xl text-[#A09FB1] font-semibold'>
+            {currentWeather?.weather[0]?.description}
+          </h3>
         </div>
+        {/* Fecha actual */}
         <p className='my-14 text-[#88869D]  flex items-center justify-center gap-2'>
-          <span>Today</span>·<span>Fri, 5 Jun</span>
+          <span>Hoy</span>·
+          <span>
+            {currentDayName}, {currentNumberOfDay} {currentMonth}
+          </span>
         </p>
+        {/* Nombre de la ubicación actual */}
         <p className='text-lg font-semibold text-[#88869D] flex items-center  justify-center gap-2'>
           <FontAwesomeIcon icon={faLocationDot} className='h-6 w-6' />
-          Helsinki
+          {currentWeather.name}
         </p>
       </div>
+      {/* Componente de búsqueda */}
       <Browser showMenu={showMenu} setShowMenu={setShowMenu} />
     </div>
   )

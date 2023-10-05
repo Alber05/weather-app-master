@@ -8,3 +8,25 @@
 ::after {
   box-sizing: border-box;
 }
+
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+progress::-webkit-progress-value {
+  background-color: #ffec65; /* Cambia el color a verde, puedes usar cualquier color que desees */
+}
+
+/* Cambia el color de fondo de la barra de progreso (opcional) */
+progress::-webkit-progress-bar {
+  background-color: #cccccc; /* Cambia el color de fondo a gris, puedes usar cualquier color que desees */
+}

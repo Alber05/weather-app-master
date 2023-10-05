@@ -1,27 +1,23 @@
-import { useEffect } from 'react'
-
+import React, { useContext } from 'react' // Asegúrate de importar React
 import CurrentWeather from './components/CurrentWeather'
 import WeatherInfo from './components/WeatherInfo'
+import Loader from './components/Loader' // Asumo que tienes un componente Loader
+import { ApiContext } from './context/ApiContext'
 
 function App() {
-  useEffect(() => {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const latitud = position.coords.latitude
-        const longitud = position.coords.longitude
-        // Aquí puedes usar latitud y longitud en tu llamada a la API.
-        console.log(latitud, longitud)
-      })
-    } else {
-      console.log('La geolocalización no está disponible en este dispositivo.')
-    }
-  }, [])
+  const { isLoading } = useContext(ApiContext)
 
   return (
-    <div className='grid grid-cols-6 font-raleway min-h-screen '>
-      <CurrentWeather />
-      <WeatherInfo />
-    </div>
+    <>
+      {isLoading ? (
+        <Loader /> // Muestra el Loader si isLoading es true
+      ) : (
+        <div className='grid grid-cols-6 font-raleway min-h-screen lg:min-h-screen'>
+          <CurrentWeather />
+          <WeatherInfo />
+        </div>
+      )}
+    </>
   )
 }
 
